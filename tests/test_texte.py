@@ -1,4 +1,4 @@
-from app.texte import est_palindrome
+from app.texte import est_palindrome, compter_voyelles
 
 
 def test_est_palindrome_normal():
@@ -11,3 +11,16 @@ def test_est_palindrome_limite():
 
 def test_est_palindrome_erreur():
     assert est_palindrome("") is True
+
+
+
+def test_compter_voyelles_normal():
+    assert compter_voyelles("Bonjour") == 3
+
+
+def test_compter_voyelles_limite():
+    assert compter_voyelles("a") == 1
+
+
+def test_compter_voyelles_erreur():
+    assert compter_voyelles("") == 0
