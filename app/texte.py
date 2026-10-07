@@ -4,8 +4,12 @@ def est_palindrome(texte):
 def compter_voyelles(texte): 
     voyelles = "aeiouy" 
     compteur = 0
+
     for lettre in texte.lower():
         if lettre in voyelles:
             compteur += 1
 
     return compteur
+
+def inverser(texte):
+    return texte[::-1]

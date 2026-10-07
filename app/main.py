@@ -1,6 +1,5 @@
 from fastapi import FastAPI
-from app.texte import est_palindrome
-from app.texte import est_palindrome, compter_voyelles
+from app.texte import est_palindrome, compter_voyelles, inverser
 
 app = FastAPI()
 
@@ -22,4 +21,11 @@ def voyelles(texte: str):
     return {
         "texte": texte,
         "nombre_voyelles": compter_voyelles(texte)
+    }
+
+@app.get("/texte/inverser")
+def inverser_texte(texte: str):
+    return {
+        "texte_original": texte,
+        "texte_inverse": inverser(texte)
     }
