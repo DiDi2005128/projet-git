@@ -1,4 +1,4 @@
-from app.math import factorielle, est_premier
+from app.math import factorielle, est_premier, pgcd
 
 def test_factorielle_normal():
     assert factorielle(5) == 120
@@ -21,3 +21,16 @@ def test_est_premier_limite():
 
 def test_est_premier_erreur():
     assert est_premier(-5) == False
+
+
+def test_pgcd_normal():
+    assert pgcd(48, 18) == 6
+
+
+def test_pgcd_limites():
+    assert pgcd(0, 5) == 5
+    assert pgcd(0, 0) == 0
+
+
+def test_pgcd_nombres_negatifs():
+    assert pgcd(-48, 18) == 6

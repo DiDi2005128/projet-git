@@ -15,3 +15,10 @@ def est_premier(n: int) -> bool:
         if n % i == 0:
             return False
     return True
+
+def pgcd(n: int, m: int) -> int:
+    n = abs(n)
+    m = abs(m)
+    while m:
+        n, m = m, n % m
+    return n
