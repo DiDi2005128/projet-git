@@ -1,6 +1,6 @@
 # projet-git
 
-Projet Python basé sur une API FastAPI qui expose des fonctionnalités de calcul mathématique et de traitement de texte.
+Projet Python basé sur une API FastAPI qui expose des fonctionnalités de calcul mathématique, de traitement de texte et de conversion unitaire.
 
 Langage principal : Python
 
@@ -13,9 +13,10 @@ Ce projet contient une petite API REST permettant de :
 - inverser une chaîne de caractères ;
 - calculer la factorielle d'un nombre ;
 - tester si un nombre est premier ;
-- calculer le PGCD de deux nombres.
+- calculer le PGCD de deux nombres ;
+- convertir des températures, distances et montants entre devises.
 
-Le projet est structuré en modules Python séparés et inclut des tests unitaires avec pytest.
+Le projet est structuré en modules Python séparés et comprend des tests unitaires avec pytest.
 
 ---
 
@@ -25,11 +26,13 @@ Le projet est structuré en modules Python séparés et inclut des tests unitair
 projet-git/
 ├── app/
 │   ├── __init__.py
+│   ├── conversion.py
+│   ├── erreurs.py
 │   ├── main.py
 │   ├── math.py
-│   ├── texte.py
-│   └── erreurs.py
+│   └── texte.py
 ├── tests/
+│   ├── test_conversion.py
 │   ├── test_math.py
 │   └── test_texte.py
 ├── .gitignore
@@ -42,25 +45,50 @@ projet-git/
 
 ## Fonctionnalités
 
+### Textes
+- `est_palindrome(texte)`
+- `compter_voyelles(texte)`
+- `inverser(texte)`
+
 ### Mathématiques
 - `factorielle(n)`
 - `est_premier(n)`
 - `pgcd(n, m)`
 
-### Texte
-- `est_palindrome(texte)`
-- `compter_voyelles(texte)`
-- `inverser(texte)`
+### Conversion
+- `celsius_fahrenheit(celsius)`
+- `km_miles(km)`
+- `euros_devise(montant, devise)`
 
-### API REST
-L'application expose des routes FastAPI :
+Les taux de conversion disponibles sont :
+- USD : 1.08
+- GBP : 0.85
+- JPY : 165.20
 
+---
+
+## API REST
+
+L'application expose ces routes FastAPI :
+
+### Accueil
 - `GET /`
-- `GET /texte/palindrome`
-- `GET /texte/voyelles`
-- `GET /texte/inverser`
-- `GET /math/factorielle`
-- `GET /math/premier`
+
+### Texte
+- `GET /texte/palindrome?texte=radar`
+- `GET /texte/voyelles?texte=Bonjour`
+- `GET /texte/inverser?texte=bonjour`
+
+### Conversion
+- `GET /conversion/celsius-fahrenheit?celsius=20`
+- `GET /conversion/km-miles?km=10`
+- `GET /conversion/euros-devise?montant=100&devise=USD`
+
+### Mathématiques
+- `GET /math/factorielle?n=5`
+- `GET /math/premier?n=7`
+
+> Le calcul de PGCD est implémenté dans le module `app.math` mais n'est pas exposé comme route HTTP dans `app/main.py` pour l'instant.
 
 ---
 
@@ -73,6 +101,8 @@ Installez ensuite les dépendances :
 ```bash
 pip install fastapi uvicorn pytest
 ```
+
+Si vous utilisez un environnement virtuel, il est aussi conseillé d'installer les dépendances depuis le fichier `requirements.txt` après l'avoir complété selon vos besoins.
 
 ---
 
@@ -145,6 +175,52 @@ Réponse :
 }
 ```
 
+### Convertir des Celsius en Fahrenheit
+
+```bash
+curl "http://127.0.0.1:8000/conversion/celsius-fahrenheit?celsius=20"
+```
+
+Réponse :
+
+```json
+{
+  "celsius": 20,
+  "fahrenheit": 68.0
+}
+```
+
+### Convertir des kilomètres en miles
+
+```bash
+curl "http://127.0.0.1:8000/conversion/km-miles?km=10"
+```
+
+Réponse :
+
+```json
+{
+  "km": 10,
+  "miles": 6.21
+}
+```
+
+### Convertir des euros vers une devise
+
+```bash
+curl "http://127.0.0.1:8000/conversion/euros-devise?montant=100&devise=USD"
+```
+
+Réponse :
+
+```json
+{
+  "montant": 100,
+  "devise": "USD",
+  "resultat": 108.0
+}
+```
+
 ### Calculer une factorielle
 
 ```bash
@@ -187,29 +263,27 @@ Pour exécuter les tests :
 pytest
 ```
 
----
-
-## Exemple de résultats attendus
-
-Les tests couvrent notamment :
+Les tests couvrent :
 
 - factorielle de nombres normaux et limites ;
 - nombres premiers et cas négatifs ;
 - chaînes de caractères vides et valides ;
 - calculs sur les voyelles et inversion de texte ;
+- conversion Celsius/Fahrenheit, km/miles et euro vers devise ;
 - PGCD sur plusieurs cas.
 
 ---
 
 ## Remarques
 
-- Le fichier `requirements.txt` est vide ou incomplet dans son état actuel.
-- Pour un usage réel, il est recommandé d'y ajouter les dépendances nécessaires, par exemple :
-  ```txt
-  fastapi
-  uvicorn
-  pytest
-  ```
+- Le fichier `requirements.txt` est actuellement vide ou incomplet dans son état actuel.
+- Pour un usage réel, il est recommandé de l'ajouter avec les dépendances nécessaires :
+
+```txt
+fastapi
+uvicorn
+pytest
+```
 
 ---
 
